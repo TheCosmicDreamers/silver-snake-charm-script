@@ -14,15 +14,11 @@ const OWNER_CHANCE = 98;
 
 // SPECIAL VISITORS
 const SPECIAL_VISITORS = {
-    // Example visitor with a custom chance:
-    // "LuckyVisitor": {
-    //     chance: 35
-    // },
+    // Custom chance:
+    // "LuckyVisitor": { chance: 35 },
 
-    // Guaranteed visitor:
-    // "GuaranteedVisitor": {
-    //     guaranteed: true
-    // }
+    // Guaranteed:
+    // "GuaranteedVisitor": { guaranteed: true }
 };
 
 // IDENTIFY THE VISITOR
@@ -33,7 +29,7 @@ function getVisitorUsername() {
 
     if (!link) {
         console.warn(
-            "[Silver Snake Charm] Could not find the visitor username."
+            "[Silver Snake Charm] Username link not found."
         );
         return null;
     }
@@ -54,7 +50,6 @@ function getVisitorUsername() {
 // RANDOMIZATION
 function rollForCharm(visitor) {
     const special = SPECIAL_VISITORS[visitor];
-
     let chance;
 
     if (special?.guaranteed === true) {
@@ -119,4 +114,3 @@ if (document.readyState === "loading") {
 } else {
     showCharmNotification();
 }
-
