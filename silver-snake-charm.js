@@ -10,7 +10,7 @@ const DEFAULT_CHANCE = 10;
 // SPECIAL VISITORS
 const SPECIAL_VISITORS = {
     "Stardustsnow23e32": {
-        chance: 90
+        chance: 20
     }
 };
 
