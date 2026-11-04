@@ -12,9 +12,13 @@ const SPECIAL_VISITORS = {
     "Stardustsnow23e32": {
         chance: 20
     }
-};
 
-    // To guarantee the charm for someone:
+    // Add more special visitors here:
+    // "AnotherUsername": {
+    //     chance: 15
+    // },
+    //
+    // To guarantee the charm:
     // "UsernameHere": {
     //     guaranteed: true
     // }
@@ -43,19 +47,6 @@ function getVisitorUsername() {
 
 // RANDOMIZATION
 function rollForCharm(visitor) {
-    const key = "silverSnakeCharmResult:" + visitor;
-
-    // Keep an existing result on reload
-    const savedResult = localStorage.getItem(key);
-
-    if (savedResult !== null) {
-        try {
-            return JSON.parse(savedResult);
-        } catch {
-            localStorage.removeItem(key);
-        }
-    }
-
     // Determine the visitor's chance
     const special = SPECIAL_VISITORS[visitor];
 
@@ -65,15 +56,21 @@ function rollForCharm(visitor) {
         chance = special.guaranteed ? 100 : special.chance;
     }
 
+    // Keep the chance between 0% and 100%
     chance = Math.max(0, Math.min(100, chance));
 
+    // Roll fresh every time the script runs
     const result = {
         received: Math.random() * 100 < chance,
         visitor: visitor,
         chance: chance
     };
 
-    localStorage.setItem(key, JSON.stringify(result));
+    console.log(
+        `[Silver Snake Charm] ${visitor}: ` +
+        `${result.received ? "SUCCESS" : "No charm"} ` +
+        `(Chance: ${chance}%)`
+    );
 
     return result;
 }
@@ -106,6 +103,10 @@ if (document.readyState === "loading") {
         "DOMContentLoaded",
         showCharmNotification
     );
+} else {
+    showCharmNotification();
+}
+
 } else {
     showCharmNotification();
 }
