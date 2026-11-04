@@ -14,7 +14,7 @@ const OWNER_CHANCE = 98;
 
 // SPECIAL VISITORS
 const SPECIAL_VISITORS = {
-    // Example:
+    // Example visitor with a custom chance:
     // "LuckyVisitor": {
     //     chance: 35
     // },
@@ -64,7 +64,6 @@ function rollForCharm(visitor) {
     } else if (special && Number.isFinite(special.chance)) {
         chance = special.chance;
     } else {
-        // Roll a new percentage between 1 and 20
         chance = Math.floor(
             Math.random() *
             (MAX_DEFAULT_CHANCE - MIN_DEFAULT_CHANCE + 1)
@@ -110,27 +109,14 @@ function showCharmNotification() {
         result.received ? "block" : "none";
 }
 
-// RUN WHEN THE PAGE IS READY
+// RUN ONCE WHEN THE PAGE IS READY
 if (document.readyState === "loading") {
     document.addEventListener(
         "DOMContentLoaded",
-        showCharmNotification
+        showCharmNotification,
+        { once: true }
     );
 } else {
     showCharmNotification();
 }
 
-
-// RUN WHEN THE PAGE IS READY
-if (document.readyState === "loading") {
-    document.addEventListener(
-        "DOMContentLoaded",
-        showCharmNotification
-    );
-} else {
-    showCharmNotification();
-}
-
-} else {
-    showCharmNotification();
-}
