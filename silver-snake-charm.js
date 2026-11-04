@@ -4,22 +4,23 @@
    Silver Snake Charm - Experiment 001
    ===================================== */
 
-// DEFAULT CHANCE FOR EVERYONE
-const DEFAULT_CHANCE = 10;
+// EVERYONE ELSE: RANDOM CHANCE BETWEEN 1% AND 20%
+const MIN_DEFAULT_CHANCE = 1;
+const MAX_DEFAULT_CHANCE = 20;
+
+// YOUR SPECIAL CHANCE
+const OWNER_USERNAME = "Stardustsnow23e32";
+const OWNER_CHANCE = 98;
 
 // SPECIAL VISITORS
 const SPECIAL_VISITORS = {
-    "Stardustsnow23e32": {
-        chance: 99
-    }
-
-    // Add more special visitors here:
-    // "AnotherUsername": {
-    //     chance: 15
+    // Example:
+    // "LuckyVisitor": {
+    //     chance: 35
     // },
-    //
-    // To guarantee the charm:
-    // "UsernameHere": {
+
+    // Guaranteed visitor:
+    // "GuaranteedVisitor": {
     //     guaranteed: true
     // }
 };
@@ -30,7 +31,12 @@ function getVisitorUsername() {
         '#userView a[href*="/userinfo/"]'
     );
 
-    if (!link) return null;
+    if (!link) {
+        console.warn(
+            "[Silver Snake Charm] Could not find the visitor username."
+        );
+        return null;
+    }
 
     const match = link.getAttribute("href").match(
         /\/userinfo\/([^/?#]+)/
@@ -47,32 +53,35 @@ function getVisitorUsername() {
 
 // RANDOMIZATION
 function rollForCharm(visitor) {
-    // Determine the visitor's chance
     const special = SPECIAL_VISITORS[visitor];
 
-    let chance = DEFAULT_CHANCE;
+    let chance;
 
-    if (special) {
-        chance = special.guaranteed ? 100 : special.chance;
+    if (special?.guaranteed === true) {
+        chance = 100;
+    } else if (visitor === OWNER_USERNAME) {
+        chance = OWNER_CHANCE;
+    } else if (special && Number.isFinite(special.chance)) {
+        chance = special.chance;
+    } else {
+        // Roll a new percentage between 1 and 20
+        chance = Math.floor(
+            Math.random() *
+            (MAX_DEFAULT_CHANCE - MIN_DEFAULT_CHANCE + 1)
+        ) + MIN_DEFAULT_CHANCE;
     }
 
-    // Keep the chance between 0% and 100%
     chance = Math.max(0, Math.min(100, chance));
 
-    // Roll fresh every time the script runs
-    const result = {
-        received: Math.random() * 100 < chance,
-        visitor: visitor,
-        chance: chance
-    };
+    const received = Math.random() * 100 < chance;
 
     console.log(
-        `[Silver Snake Charm] ${visitor}: ` +
-        `${result.received ? "SUCCESS" : "No charm"} ` +
-        `(Chance: ${chance}%)`
+        `[Silver Snake Charm] Visitor: ${visitor} | ` +
+        `Chance: ${chance}% | ` +
+        `Result: ${received ? "CHARM!" : "No charm"}`
     );
 
-    return result;
+    return { received, visitor, chance };
 }
 
 // DISPLAY NOTIFICATION
@@ -81,11 +90,15 @@ function showCharmNotification() {
         "silverSnakeCharm"
     );
 
-    if (!notification) return;
+    if (!notification) {
+        console.warn(
+            "[Silver Snake Charm] Notification element not found."
+        );
+        return;
+    }
 
     const visitor = getVisitorUsername();
 
-    // If we cannot identify the visitor, keep it hidden
     if (!visitor) {
         notification.style.display = "none";
         return;
@@ -96,6 +109,17 @@ function showCharmNotification() {
     notification.style.display =
         result.received ? "block" : "none";
 }
+
+// RUN WHEN THE PAGE IS READY
+if (document.readyState === "loading") {
+    document.addEventListener(
+        "DOMContentLoaded",
+        showCharmNotification
+    );
+} else {
+    showCharmNotification();
+}
+
 
 // RUN WHEN THE PAGE IS READY
 if (document.readyState === "loading") {
