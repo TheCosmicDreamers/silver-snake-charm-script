@@ -4,18 +4,15 @@
    Silver Snake Charm - Experiment 001
    ===================================== */
 
-// DEFAULT SETTINGS
-const DEFAULT_CHANCE = 100; // Testing only!
+// DEFAULT CHANCE FOR EVERYONE
+const DEFAULT_CHANCE = 10;
 
 // SPECIAL VISITORS
 const SPECIAL_VISITORS = {
-    "ExampleUsername": {
-        chance: 100
-    },
-
-    "AnotherUsername": {
-        chance: 50
-    },
+    "Stardustsnow23e32": {
+        chance: 90
+    }
+};
 
     // To guarantee the charm for someone:
     // "UsernameHere": {
