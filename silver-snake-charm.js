@@ -5,11 +5,11 @@
    ===================================== */
 
 // EVERYONE ELSE: RANDOM CHANCE BETWEEN 1% AND 20%
-const MIN_DEFAULT_CHANCE = 80;
-const MAX_DEFAULT_CHANCE = 90;
+const MIN_DEFAULT_CHANCE = 1;
+const MAX_DEFAULT_CHANCE = 20;
 
 // YOUR SPECIAL CHANCE
-const OWNER_USERNAME = "";
+const OWNER_USERNAME = "Stardustsnow23e32";
 const OWNER_CHANCE = 98;
 
 // SPECIAL VISITORS
